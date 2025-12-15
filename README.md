@@ -5,23 +5,23 @@ A lightweight, cross-platform Python tool designed to cleanly remove the "Notebo
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.6%2B-blue)
 
-## 🚀 Features
+## Features
 
 -   **Smart Detection:** Doesn't just crop the page. It detects the background color surrounding the watermark.
 -   **Clean Removal:** Covers the watermark with the exact background shade, preserving the slide's aesthetics.
 -   **Batch Friendly:** Can be easily modified or looped in a shell to process multiple files (CLI support).
 -   **Cross-Platform:** Works on Windows, macOS, and Linux.
 
-## 🛠️ Prerequisites
+## Prerequisites
 
 -   **Python 3.6** or higher.
 -   **pip** (standard Python package manager).
 
-## 📥 Installation
+## Installation
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/notebooklm-watermark-remover.git
+    git clone https://github.com/Albonire/notebooklm-watermark-remover.git
     cd notebooklm-watermark-remover
     ```
 
@@ -43,7 +43,7 @@ A lightweight, cross-platform Python tool designed to cleanly remove the "Notebo
     pip install -r requirements.txt
     ```
 
-## 📖 Usage
+## Usage
 
 ### Basic Usage
 Run the script passing the path to your PDF file. The tool will generate a cleaned version in the same directory.
@@ -66,7 +66,7 @@ View all available options:
 python remover.py --help
 ```
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 notebooklm-watermark-remover/
@@ -77,9 +77,9 @@ notebooklm-watermark-remover/
 └── .gitignore          # Git configuration
 ```
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome, so feel free to submit a Pull Request.
 
 1.  Fork the project
 2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -87,6 +87,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4.  Push to the branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
