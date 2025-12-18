@@ -49,7 +49,7 @@ A lightweight, cross-platform Python tool designed to cleanly remove the "Notebo
 Run the script passing the path to your PDF file. The tool will generate a cleaned version in the same directory.
 
 ```bash
-python remover.py path/to/presentation.pdf
+python3 remover.py path/to/presentation.pdf
 ```
 *Output:* `path/to/presentation_cleaned.pdf`
 
@@ -57,13 +57,13 @@ python remover.py path/to/presentation.pdf
 You can specify where to save the cleaned file:
 
 ```bash
-python remover.py original.pdf -o cleaned/final_presentation.pdf
+python3 remover.py original.pdf -o cleaned/final_presentation.pdf
 ```
 
 ### Help Command
 View all available options:
 ```bash
-python remover.py --help
+python3 remover.py --help
 ```
 
 ## Project Structure
