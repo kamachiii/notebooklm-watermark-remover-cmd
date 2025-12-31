@@ -1,81 +1,71 @@
-# NotebookLM Watermark Remover
+# NotebookLM Watermark Remover 🚀
 
-A lightweight, cross-platform Python tool designed to cleanly remove the "NotebookLM" watermark from PDF slides.
+Una herramienta de precisión diseñada para eliminar la marca de agua "NotebookLM" de tus diapositivas PDF de forma quirúrgica, preservando la estética original y minimizando el impacto en el contenido circundante.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.6%2B-blue)
+## ✨ Características Principales
 
-## Features
+-   **Detección Multicapa Inteligente:**
+    -   **Texto:** Identifica "NotebookLM" como texto nativo.
+    -   **Vectores:** Detecta letras trazadas como curvas (útil para PDFs exportados desde otras herramientas).
+    -   **Escaneo Visual de Píxeles:** Si falla lo anterior, escanea la esquina para encontrar el área mínima exacta.
+-   **Ajuste Adaptativo:** El parche de borrado ya no es fijo; se adapta al tamaño real de la marca de agua encontrada.
+-   **Color Dominante (Smart Fill):** Analiza estadísticamente el margen de la página para encontrar el color de fondo exacto, ignorando letras o líneas cercanas.
+-   **Procesamiento por Lotes:** Procesa una carpeta entera de PDFs con un solo comando.
+-   **Interfaz Moderna:** Incluye barra de progreso visual (`tqdm`).
+-   **Modo Preview:** Prueba la configuración en la primera página antes de procesar archivos grandes.
 
--   **Smart Detection:** Doesn't just crop the page. It detects the background color surrounding the watermark.
--   **Clean Removal:** Covers the watermark with the exact background shade, preserving the slide's aesthetics.
--   **Batch Friendly:** Can be easily modified or looped in a shell to process multiple files (CLI support).
--   **Cross-Platform:** Works on Windows, macOS, and Linux.
+## 🛠 Instalación
 
-## Prerequisites
-
--   **Python 3.6** or higher.
--   **pip** (standard Python package manager).
-
-## Installation
-
-1.  **Clone the repository:**
+1.  **Limpiar entorno previo (si es necesario):**
     ```bash
-    git clone https://github.com/Albonire/notebooklm-watermark-remover.git
-    cd notebooklm-watermark-remover
+    rm -rf venv
     ```
 
-2.  **Set up a Virtual Environment (Recommended):**
+2.  **Configurar entorno nuevo:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # En Windows: venv\Scripts\activate
+    ```
 
-    *   **Windows:**
-        ```bash
-        python -m venv venv
-        venv\Scripts\activate
-        ```
-    *   **macOS / Linux:**
-        ```bash
-        python3 -m venv venv
-        source venv/bin/activate
-        ```
-
-3.  **Install Dependencies:**
+3.  **Instalar dependencias:**
     ```bash
     pip install -r requirements.txt
     ```
 
-## Usage
+## 🚀 Uso
 
-### Basic Usage
-Run the script passing the path to your PDF file. The tool will generate a cleaned version in the same directory.
-
+### Básico (Un solo archivo)
 ```bash
-python remover.py path/to/presentation.pdf
+python remover.py presentacion.pdf
 ```
-*Output:* `path/to/presentation_cleaned.pdf`
+*Genera:* `presentacion_cleaned.pdf`
 
-### Custom Output Location
-You can specify where to save the cleaned file:
-
+### Procesar una carpeta completa
 ```bash
-python remover.py original.pdf -o cleaned/final_presentation.pdf
+python remover.py ./carpeta_de_pdfs/
 ```
 
-### Help Command
-View all available options:
+### Modo Preview (Verificar resultados rápido)
+Procesa solo la primera página para que puedas ver cómo queda el parche:
 ```bash
-python remover.py --help
+python remover.py archivo.pdf --preview
 ```
 
-## Contributing
+### Forzar un color específico
+Si el fondo es muy complejo y la detección automática no te convence:
+```bash
+python remover.py archivo.pdf --color "#FFFFFF"
+```
 
-Contributions are welcome, so feel free to submit a Pull Request.
+## 📂 Estructura del Proyecto
 
-1.  Fork the project
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+- `remover.py`: El cerebro del proyecto.
+- `requirements.txt`: Dependencias (`PyMuPDF`, `tqdm`).
+- `LICENSE`: Licencia MIT.
 
-## License
+## 🤝 Contribuir
 
-This project is open source and available under the [MIT License](LICENSE).
+¡Las contribuciones son bienvenidas! Si tienes una idea para mejorar la detección en fondos degradados o quieres añadir soporte para otros tipos de marcas de agua, abre un Pull Request.
+
+---
+Hecho con ❤️ para mejorar tus presentaciones.
