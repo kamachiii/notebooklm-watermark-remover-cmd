@@ -240,6 +240,44 @@ def detect_vector_watermark(page, search_rect):
     except Exception:
         return None
 
+def get_dominant_corner_color(page):
+    """
+    Determines the background color by finding the most frequent color (Mode)
+    in the bottom-right corner of the page. This filters out noise, text,
+    and lines that might overlap with the corner.
+    """
+    try:
+        w = page.rect.width
+        h = page.rect.height
+        
+        # Sample a safe margin box in the corner (50x20)
+        # This is large enough to contain mostly background, 
+        # but small enough to focus on the watermark area.
+        clip = fitz.Rect(w - 50, h - 20, w, h)
+        pix = page.get_pixmap(clip=clip)
+        
+        if pix.width < 1 or pix.height < 1:
+            return (1, 1, 1)
+            
+        # Frequency counter
+        color_counts = {}
+        
+        for y in range(pix.height):
+            for x in range(pix.width):
+                # Get RGB as integer tuple for hashing
+                rgb = pix.pixel(x, y) 
+                color_counts[rgb] = color_counts.get(rgb, 0) + 1
+                
+        # Find the most frequent color
+        most_frequent_rgb = max(color_counts, key=color_counts.get)
+        
+        # Normalize to 0-1 for PyMuPDF
+        return (most_frequent_rgb[0]/255.0, most_frequent_rgb[1]/255.0, most_frequent_rgb[2]/255.0)
+        
+    except Exception as e:
+        print(f"Warning: Color detection failed: {e}")
+        return (1, 1, 1) # Default to white
+
 def remove_watermark(input_path, output_path):
     """
     Removes the NotebookLM watermark using PDF Redaction.
@@ -321,7 +359,8 @@ def remove_watermark(input_path, output_path):
             
             if detected_bbox:
                 detection_source = "Visual Scan"
-                detected_bg_color = scanned_bg
+                # Note: 'scanned_bg' from scan_for_content_bbox is just the corner pixel.
+                # We will ignore it in favor of the new 'dominant' calculator below.
                 padding = 2
                 target_rects = [fitz.Rect(
                     detected_bbox.x0 - padding,
@@ -341,18 +380,10 @@ def remove_watermark(input_path, output_path):
         redaction_applied = False
         print(f"  [Page {page_num+1}] Detected: {detection_source}.", end="")
         
-        # Determine Fill Color
-        # Always prioritize the corner pixel color to ensure seamless blending with margins
-        # (This solves the "Grey patch on white background" issue)
-        try:
-            corner_pix = page.get_pixmap(clip=fitz.Rect(w-1, h-1, w, h))
-            cr, cg, cb = corner_pix.pixel(0, 0)
-            corner_color = (cr/255.0, cg/255.0, cb/255.0)
-        except:
-            corner_color = (1, 1, 1)
-
-        fill_color = corner_color
-        print(" Masking with page corner color.")
+        # Determine Fill Color using DOMINANT COLOR (Mode)
+        # This is robust against text/lines in the corner area.
+        fill_color = get_dominant_corner_color(page)
+        print(" Masking with dominant corner color.")
 
         for rect in target_rects:
             page.add_redact_annot(rect, fill=fill_color)
