@@ -1,71 +1,70 @@
-# NotebookLM Watermark Remover 🚀
+# NotebookLM Watermark Remover
 
-Una herramienta de precisión diseñada para eliminar la marca de agua "NotebookLM" de tus diapositivas PDF de forma quirúrgica, preservando la estética original y minimizando el impacto en el contenido circundante.
+A straightforward tool that cleanly removes the "NotebookLM" watermark from your PDF slides while keeping everything else intact.
 
-## ✨ Características Principales
+## What It Does
 
--   **Detección Multicapa Inteligente:**
-    -   **Texto:** Identifica "NotebookLM" como texto nativo.
-    -   **Vectores:** Detecta letras trazadas como curvas (útil para PDFs exportados desde otras herramientas).
-    -   **Escaneo Visual de Píxeles:** Si falla lo anterior, escanea la esquina para encontrar el área mínima exacta.
--   **Ajuste Adaptativo:** El parche de borrado ya no es fijo; se adapta al tamaño real de la marca de agua encontrada.
--   **Color Dominante (Smart Fill):** Analiza estadísticamente el margen de la página para encontrar el color de fondo exacto, ignorando letras o líneas cercanas.
--   **Procesamiento por Lotes:** Procesa una carpeta entera de PDFs con un solo comando.
--   **Interfaz Moderna:** Incluye barra de progreso visual (`tqdm`).
--   **Modo Preview:** Prueba la configuración en la primera página antes de procesar archivos grandes.
+**Smart Detection:**
+- **Text Layer:** Finds "NotebookLM" written as actual text
+- **Vector Graphics:** Catches letters drawn as shapes (common in exported PDFs)
+- **Pixel Analysis:** If all else fails, scans the corner to locate the exact watermark area
 
-## 🛠 Instalación
+**Clean Removal:**
+- Adapts the removal area to fit the actual watermark size—no one-size-fits-all approach
+- Analyzes your page margins to match the background color perfectly, ignoring nearby elements
+- Processes entire folders of PDFs in one go
+- Shows you a progress bar so you're not left wondering
+- Test on a single page before running on your whole document
 
-1.  **Limpiar entorno previo (si es necesario):**
-    ```bash
-    rm -rf venv
-    ```
+## Getting Started
 
-2.  **Configurar entorno nuevo:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # En Windows: venv\Scripts\activate
-    ```
-
-3.  **Instalar dependencias:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## 🚀 Uso
-
-### Básico (Un solo archivo)
+1. **Fresh start (if needed):**
 ```bash
-python remover.py presentacion.pdf
-```
-*Genera:* `presentacion_cleaned.pdf`
-
-### Procesar una carpeta completa
-```bash
-python remover.py ./carpeta_de_pdfs/
+rm -rf venv
 ```
 
-### Modo Preview (Verificar resultados rápido)
-Procesa solo la primera página para que puedas ver cómo queda el parche:
+2. **Set things up:**
 ```bash
-python remover.py archivo.pdf --preview
+python -m venv venv
+source venv/bin/activate  # Windows folks: venv\Scripts\activate
 ```
 
-### Forzar un color específico
-Si el fondo es muy complejo y la detección automática no te convence:
+3. **Grab the dependencies:**
 ```bash
-python remover.py archivo.pdf --color "#FFFFFF"
+pip install -r requirements.txt
 ```
 
-## 📂 Estructura del Proyecto
+## How to Use It
 
-- `remover.py`: El cerebro del proyecto.
-- `requirements.txt`: Dependencias (`PyMuPDF`, `tqdm`).
-- `LICENSE`: Licencia MIT.
+### Single file
+```bash
+python remover.py presentation.pdf
+```
+Creates `presentation_cleaned.pdf` in the same folder.
 
-## 🤝 Contribuir
+### Batch process a folder
+```bash
+python remover.py ./pdf_folder/
+```
 
-¡Las contribuciones son bienvenidas! Si tienes una idea para mejorar la detección en fondos degradados o quieres añadir soporte para otros tipos de marcas de agua, abre un Pull Request.
+### Try before you commit
+Check how it looks on just the first page:
+```bash
+python remover.py file.pdf --preview
+```
 
----
-Hecho con ❤️ para mejorar tus presentaciones.
+### Override the background color
+If the auto-detection doesn't nail it:
+```bash
+python remover.py file.pdf --color "#FFFFFF"
+```
+
+## What's Inside
+
+- `remover.py` - Does all the heavy lifting
+- `requirements.txt` - Lists what you need (PyMuPDF, tqdm)
+- `LICENSE` - MIT License
+
+## Want to Help?
+
+Pull requests are welcome. Found a bug? Open an issue.
