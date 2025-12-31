@@ -66,17 +66,6 @@ View all available options:
 python remover.py --help
 ```
 
-## Project Structure
-
-```
-notebooklm-watermark-remover/
-├── remover.py          # Main script
-├── requirements.txt    # Dependencies (PyMuPDF)
-├── README.md           # Documentation
-├── LICENSE             # MIT License
-└── .gitignore          # Git configuration
-```
-
 ## Contributing
 
 Contributions are welcome, so feel free to submit a Pull Request.
