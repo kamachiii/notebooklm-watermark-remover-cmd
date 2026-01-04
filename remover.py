@@ -123,8 +123,12 @@ def remove_watermark(input_path, output_path, preview=False, force_color=None):
             page.add_redact_annot(r, fill=fill)
         page.apply_redactions()
 
-    doc.save(output_path)
-    doc.close()
+    try:
+        # Optimizar el guardado para reducir el tamaño del archivo
+        doc.save(output_path, garbage=3, deflate=True, clean=True)
+        doc.close()
+    except Exception as e:
+        print(f"Error al guardar: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description="NotebookLM Watermark Remover")
