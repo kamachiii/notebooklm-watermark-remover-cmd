@@ -26,7 +26,7 @@ Instead of just covering the watermark with a solid color box (which looks bad o
 
 1. **Set things up:**
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # indows folks: venv\Scripts\activate
 ```
 
@@ -39,22 +39,22 @@ pip install -r requirements.txt
 
 ### Single file (PDF or Image)
 ```bash
-python remover.py presentation.pdf
+python3 remover.py presentation.pdf
 # OR
-python remover.py slide.png
+python3 remover.py slide.png
 ```
 Creates `presentation_cleaned.pdf` or `slide_cleaned.png` in the same folder.
 
 ### Batch process a folder
 ```bash
-python remover.py ./my_folder/
+python3 remover.py ./my_folder/
 ```
 Automatically detects and cleans all supported files (`.pdf`, `.png`, `.jpg`, etc.) in the directory.
 
 ### Try before you commit (PDF only)
 Check how it looks on just the first page:
 ```bash
-python remover.py file.pdf --preview
+python3 remover.py file.pdf --preview
 ```
 
 ## What's Inside
