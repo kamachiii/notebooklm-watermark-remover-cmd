@@ -1,6 +1,8 @@
 # NotebookLM Watermark Remover
 
-A powerful tool that cleanly removes the "NotebookLM" watermark from your PDF slides and images (PNG, JPG) using advanced computer vision techniques.
+![Captura de funcionalidad del proyecto](public/screenshot.jpg)
+
+A powerful tool that cleanly removes the "NotebookLM" watermark from your PDF slides and images, infographic (PNG, JPG) using advanced computer vision techniques.
 
 ## What It Does
 
@@ -25,7 +27,7 @@ Instead of just covering the watermark with a solid color box (which looks bad o
 1. **Set things up:**
 ```bash
 python -m venv venv
-source venv/bin/activate  # Windows folks: venv\Scripts\activate
+source venv/bin/activate  # indows folks: venv\Scripts\activate
 ```
 
 2. **Grab the dependencies:**
@@ -63,4 +65,4 @@ python remover.py file.pdf --preview
 
 ## Want to Help?
 
-Pull requests are welcome. Found a bug? Open an issue.
+Pull requests are welcome. Open an issues or whatever you want.
