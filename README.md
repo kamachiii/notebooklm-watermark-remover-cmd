@@ -35,6 +35,16 @@ source venv/bin/activate  # indows folks: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Running the EXE (Windows)
+
+After building (see **Building EXE** below), run:
+```bash
+dist\NotebookLM-Watermark-Remover.exe presentation.pdf
+dist\NotebookLM-Watermark-Remover.exe .\my_folder\
+dist\NotebookLM-Watermark-Remover.exe file.pdf -o output.pdf
+dist\NotebookLM-Watermark-Remover.exe file.pdf --preview
+```
+
 ## How to Use It
 
 ### Single file (PDF or Image)
@@ -57,10 +67,21 @@ Check how it looks on just the first page:
 python3 remover.py file.pdf --preview
 ```
 
+## Building EXE (Windows)
+
+```bash
+pip install -r requirements.txt -r requirements-build.txt
+python -m PyInstaller remover.spec --noconfirm
+```
+
+The executable will be at `dist\NotebookLM-Watermark-Remover.exe`.
+
 ## What's Inside
 
 - `remover.py` - Core logic using PyMuPDF and OpenCV.
+- `remover.spec` - PyInstaller spec for building the Windows exe.
 - `requirements.txt` - Dependencies: `pymupdf`, `tqdm`, `Pillow`, `opencv-python-headless`, `numpy`.
+- `requirements-build.txt` - PyInstaller (for building exe only).
 - `LICENSE` - MIT License
 
 ## Want to Help?
