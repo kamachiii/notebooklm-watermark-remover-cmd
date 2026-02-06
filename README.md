@@ -2,6 +2,8 @@
 
 ![Captura de funcionalidad del proyecto](public/screenshot.jpg)
 
+[English](README.md) | [中文](README_zh.md)
+
 A powerful tool that cleanly removes the "NotebookLM" watermark from your PDF slides and images, infographic (PNG, JPG) using advanced computer vision techniques.
 
 ## What It Does
@@ -24,10 +26,12 @@ Instead of just covering the watermark with a solid color box (which looks bad o
 
 ## Getting Started
 
+### Using Python (All Platforms)
+
 1. **Set things up:**
 ```bash
 python3 -m venv venv
-source venv/bin/activate  # indows folks: venv\Scripts\activate
+source venv/bin/activate  # Windows folks: venv\Scripts\activate
 ```
 
 2. **Grab the dependencies:**
@@ -35,14 +39,16 @@ source venv/bin/activate  # indows folks: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Running the EXE (Windows)
+3. **Run the tool:**
+```bash
+python3 remover.py presentation.pdf
+```
 
-After building (see **Building EXE** below), run:
+### Using EXE (Windows Only)
+
+If you have built the executable (see [BUILD.md](BUILD.md)), you can run it directly:
 ```bash
 dist\NotebookLM-Watermark-Remover.exe presentation.pdf
-dist\NotebookLM-Watermark-Remover.exe .\my_folder\
-dist\NotebookLM-Watermark-Remover.exe file.pdf -o output.pdf
-dist\NotebookLM-Watermark-Remover.exe file.pdf --preview
 ```
 
 ## How to Use It
@@ -67,23 +73,14 @@ Check how it looks on just the first page:
 python3 remover.py file.pdf --preview
 ```
 
-## Building EXE (Windows)
-
-```bash
-pip install -r requirements.txt -r requirements-build.txt
-python -m PyInstaller remover.spec --noconfirm
-```
-
-The executable will be at `dist\NotebookLM-Watermark-Remover.exe`.
-
 ## What's Inside
 
 - `remover.py` - Core logic using PyMuPDF and OpenCV.
-- `remover.spec` - PyInstaller spec for building the Windows exe.
-- `requirements.txt` - Dependencies: `pymupdf`, `tqdm`, `Pillow`, `opencv-python-headless`, `numpy`.
-- `requirements-build.txt` - PyInstaller (for building exe only).
+- `remover.spec` - PyInstaller configuration for Windows.
+- `requirements.txt` - Core dependencies.
+- `BUILD.md` - Instructions for building the executable.
 - `LICENSE` - MIT License
 
 ## Want to Help?
 
-Pull requests are welcome. Open an issues or whatever you want.
+Pull requests are welcome. Feel free to open an issue or contribute!
