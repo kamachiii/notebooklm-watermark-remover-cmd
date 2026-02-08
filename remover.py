@@ -23,7 +23,7 @@ class WatermarkConfig:
     """Configuration for watermark detection and removal."""
     # Search area: Increased to cover 'NotebookLM' + Logo
     # The 'touching edge' logic prevents removing slide content that enters this area.
-    search_margin_x: int = 350 
+    search_margin_x: int = 350
     search_margin_y: int = 70
     
     # Pixel scanning settings
@@ -246,9 +246,20 @@ def main():
     parser.add_argument("path", help="File (PDF/PNG/JPG) or directory")
     parser.add_argument("-o", "--output", help="Output path")
     parser.add_argument("--preview", action="store_true", help="Process only first page (PDF only)")
-    
+    parser.add_argument("--margin-x", type=int, default=None,
+                        help="Search margin width in px from right edge (default: 350). "
+                             "Reduce to ~150 if slide content near the corner gets damaged.")
+    parser.add_argument("--margin-y", type=int, default=None,
+                        help="Search margin height in px from bottom edge (default: 70). "
+                             "Reduce to ~35 if slide content near the corner gets damaged.")
+
     args = parser.parse_args()
-    remover = WatermarkRemover()
+    config = WatermarkConfig()
+    if args.margin_x is not None:
+        config.search_margin_x = args.margin_x
+    if args.margin_y is not None:
+        config.search_margin_y = args.margin_y
+    remover = WatermarkRemover(config)
     
     tasks = []
     supported_exts = ('.pdf', '.png', '.jpg', '.jpeg', '.webp')
