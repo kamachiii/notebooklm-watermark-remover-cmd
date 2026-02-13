@@ -21,10 +21,9 @@ logger = logging.getLogger(__name__)
 @dataclass
 class WatermarkConfig:
     """Configuration for watermark detection and removal."""
-    # Search area: Increased to cover 'NotebookLM' + Logo
-    # The 'touching edge' logic prevents removing slide content that enters this area.
-    search_margin_x: int = 350
-    search_margin_y: int = 70
+    # Search area: Reduced to be more surgical and avoid document content
+    search_margin_x: int = 200
+    search_margin_y: int = 50
     
     # Pixel scanning settings
     pixel_threshold: int = 30
@@ -61,17 +60,17 @@ class WatermarkRemover:
         using local contrast (blur difference), and inpaints it.
         """
         try:
-            # 1. Median Blur to estimate 'background' without thin text
-            # Reduced kernel size slightly to be less aggressive on nearby shapes
-            blurred = cv2.medianBlur(img_bgr, 15)
+            # 1. Median Blur to estimate 'background'
+            # Reduced kernel size to be much more localized
+            blurred = cv2.medianBlur(img_bgr, 7)
             
             # 2. Difference between Original and Blur
             diff = cv2.absdiff(img_bgr, blurred)
             diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
             
             # 3. Threshold to get mask of text/sharp details
-            # Lowered threshold to capture faint shadows (prevent black spots)
-            _, mask = cv2.threshold(diff_gray, 25, 255, cv2.THRESH_BINARY)
+            # Increased threshold to be more selective (prevent capturing nearby content)
+            _, mask = cv2.threshold(diff_gray, 50, 255, cv2.THRESH_BINARY)
             
             # 4. Filter Mask: Remove large continuous blobs that touch the left/top edge
             num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
@@ -82,8 +81,14 @@ class WatermarkRemover:
             for i in range(1, num_labels): # Skip background (0)
                 x, y, stat_w, stat_h, area = stats[i]
                 
-                if stat_w > w * 0.9 or stat_h > h * 0.9:
+                # Filter by size
+                if stat_w > w * 0.8 or stat_h > h * 0.8:
                     continue
+                # Filter by position: Protect anything in the left half of the search box
+                # NotebookLM watermark is always far right.
+                if x < w * 0.2:
+                    continue
+                # Protect anything touching the edges of the ROI (likely document content)
                 if x == 0 or y == 0:
                     continue
                     
@@ -92,9 +97,9 @@ class WatermarkRemover:
             mask = new_mask
             
             # 5. Dilate to cover anti-aliasing artifacts and shadows
-            # Increased iterations to fully consume text rims
+            # Reduced iterations to prevent 'bleeding' into nearby slide content
             kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-            mask = cv2.dilate(mask, kernel, iterations=3)
+            mask = cv2.dilate(mask, kernel, iterations=1)
             
             if cv2.countNonZero(mask) == 0:
                 return img_bgr
