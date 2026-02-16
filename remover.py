@@ -21,9 +21,9 @@ logger = logging.getLogger(__name__)
 @dataclass
 class WatermarkConfig:
     """Configuration for watermark detection and removal."""
-    # Search area: Reduced to be more surgical and avoid document content
-    search_margin_x: int = 200
-    search_margin_y: int = 50
+    # Search area: Default to encompass NotebookLM watermark reliably
+    search_margin_x: int = 350
+    search_margin_y: int = 70
     
     # Pixel scanning settings
     pixel_threshold: int = 30
@@ -39,7 +39,7 @@ class WatermarkConfig:
     pdf_dpi_scale: float = 2.0 
 
     # Inpainting settings
-    inpaint_radius: int = 3
+    inpaint_radius: int = 5
 
 class WatermarkRemover:
     def __init__(self, config: WatermarkConfig = WatermarkConfig()):
@@ -56,23 +56,22 @@ class WatermarkRemover:
 
     def _clean_image_array(self, img_bgr: np.ndarray) -> np.ndarray:
         """
-        Core logic: Takes a BGR numpy array (image chunk), detects the watermark 
-        using local contrast (blur difference), and inpaints it.
+        Refined logic: Uses shape-based filtering to detect watermark characters
+        while protecting lines, large text, and other document elements.
         """
         try:
-            # 1. Median Blur to estimate 'background'
-            # Reduced kernel size to be much more localized
-            blurred = cv2.medianBlur(img_bgr, 7)
+            # 1. Background estimation using a larger blur
+            # This helps to isolate sharp text/lines from the smoother background
+            background = cv2.medianBlur(img_bgr, 11)
             
-            # 2. Difference between Original and Blur
-            diff = cv2.absdiff(img_bgr, blurred)
+            # 2. Difference and Grayscale
+            diff = cv2.absdiff(img_bgr, background)
             diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
             
-            # 3. Threshold to get mask of text/sharp details
-            # Increased threshold to be more selective (prevent capturing nearby content)
-            _, mask = cv2.threshold(diff_gray, 50, 255, cv2.THRESH_BINARY)
+            # 3. Dynamic Thresholding
+            _, mask = cv2.threshold(diff_gray, 35, 255, cv2.THRESH_BINARY)
             
-            # 4. Filter Mask: Remove large continuous blobs that touch the left/top edge
+            # 4. Surgical Filtering: Keep only things that 'look' like watermark characters
             num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
             h, w = mask.shape
             
@@ -81,32 +80,40 @@ class WatermarkRemover:
             for i in range(1, num_labels): # Skip background (0)
                 x, y, stat_w, stat_h, area = stats[i]
                 
-                # Filter by size
-                if stat_w > w * 0.8 or stat_h > h * 0.8:
+                # REJECTION RULES (to protect document content):
+                # Rule A: Ignore very thin lines (horizontal or vertical)
+                aspect_ratio = stat_w / float(stat_h)
+                if aspect_ratio > 4.0 or aspect_ratio < 0.25:
                     continue
-                # Filter by position: Protect anything in the left half of the search box
-                # NotebookLM watermark is always far right.
-                if x < w * 0.2:
+                
+                # Rule B: Ignore very large components (document titles, images)
+                if stat_w > w * 0.5 or stat_h > h * 0.5:
                     continue
-                # Protect anything touching the edges of the ROI (likely document content)
-                if x == 0 or y == 0:
+
+                # Rule C: Ignore very small noise
+                if area < 4:
+                    continue
+
+                # Rule D: Position check - keep it focused on where NotebookLM usually is
+                # Usually it's in the lower-right of our ROI
+                if x < w * 0.15: # Still protecting the very left of the ROI
                     continue
                     
                 new_mask[labels == i] = 255
             
             mask = new_mask
             
-            # 5. Dilate to cover anti-aliasing artifacts and shadows
-            # Reduced iterations to prevent 'bleeding' into nearby slide content
+            # 5. Precise Dilation
+            # Use a smaller kernel but enough to cover the anti-aliasing
             kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-            mask = cv2.dilate(mask, kernel, iterations=1)
+            mask = cv2.dilate(mask, kernel, iterations=2)
             
             if cv2.countNonZero(mask) == 0:
                 return img_bgr
 
-            # 6. Inpaint
-            # Switched to TELEA as it handles small spot removal with fewer artifacts than NS
-            cleaned = cv2.inpaint(img_bgr, mask, self.config.inpaint_radius, cv2.INPAINT_TELEA)
+            # 6. High-Quality Inpaint
+            # Using a slightly larger radius for smoother blending on the results
+            cleaned = cv2.inpaint(img_bgr, mask, 7, cv2.INPAINT_TELEA)
             
             return cleaned
         except Exception as e:
