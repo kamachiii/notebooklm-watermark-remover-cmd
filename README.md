@@ -4,7 +4,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-A powerful tool that cleanly removes the "NotebookLM" watermark from your PDF slides and images, infographic (PNG, JPG) using advanced computer vision techniques.
+A powerful tool that cleanly removes the "NotebookLM" watermark from your PDF slides, PowerPoint presentations (PPTX), and images/infographics (PNG, JPG) using advanced computer vision techniques.
 
 ## What It Does
 
@@ -16,6 +16,7 @@ Instead of just covering the watermark with a solid color box (which looks bad o
 
 **Supported Formats:**
 - **PDF Documents:** Patches the watermark on every page seamlessly.
+- **PPTX Presentations:** Removes the watermark from PowerPoint files exported by NotebookLM.
 - **Images:** Supports PNG (including transparency/alpha channel), JPG, JPEG, and WEBP.
 
 **Features:**
@@ -53,19 +54,21 @@ dist\NotebookLM-Watermark-Remover.exe presentation.pdf
 
 ## How to Use It
 
-### Single file (PDF or Image)
+### Single file (PDF, PPTX, or Image)
 ```bash
 python3 remover.py presentation.pdf
 # OR
+python3 remover.py presentation.pptx
+# OR
 python3 remover.py slide.png
 ```
-Creates `presentation_cleaned.pdf` or `slide_cleaned.png` in the same folder.
+Creates `presentation_cleaned.pdf`, `presentation_cleaned.pptx`, or `slide_cleaned.png` in the same folder.
 
 ### Batch process a folder
 ```bash
 python3 remover.py ./my_folder/
 ```
-Automatically detects and cleans all supported files (`.pdf`, `.png`, `.jpg`, etc.) in the directory.
+Automatically detects and cleans all supported files (`.pdf`, `.pptx`, `.png`, `.jpg`, etc.) in the directory.
 
 ### Try before you commit (PDF only)
 Check how it looks on just the first page:
