@@ -2,7 +2,7 @@
 
 ![项目功能截图](public/screenshot.jpg)
 
-一款强大的工具，使用先进的计算机视觉技术，可干净地移除 PDF 幻灯片、图片及信息图（PNG、JPG）中的「NotebookLM」水印。
+一款强大的工具，使用先进的计算机视觉技术，可干净地移除 PDF 幻灯片、PowerPoint 演示文稿（PPTX）、图片及信息图（PNG、JPG）中的「NotebookLM」水印。
 
 ## 功能说明
 
@@ -14,6 +14,7 @@
 
 **支持格式：**
 - **PDF 文档**：在每一页上无缝去除水印。
+- **PPTX 演示文稿**：移除 NotebookLM 导出的 PowerPoint 文件中的水印。
 - **图片**：支持 PNG（含透明通道）、JPG、JPEG 和 WEBP。
 
 **特性：**
@@ -47,19 +48,21 @@ dist\NotebookLM-Watermark-Remover.exe file.pdf --preview
 
 ## 使用方法
 
-### 单文件处理（PDF 或图片）
+### 单文件处理（PDF、PPTX 或图片）
 ```bash
 python3 remover.py presentation.pdf
 # 或
+python3 remover.py presentation.pptx
+# 或
 python3 remover.py slide.png
 ```
-将在同一目录下生成 `presentation_cleaned.pdf` 或 `slide_cleaned.png`。
+将在同一目录下生成 `presentation_cleaned.pdf`、`presentation_cleaned.pptx` 或 `slide_cleaned.png`。
 
 ### 批量处理文件夹
 ```bash
 python3 remover.py ./my_folder/
 ```
-自动检测并清理目录中所有支持的文件（`.pdf`、`.png`、`.jpg` 等）。
+自动检测并清理目录中所有支持的文件（`.pdf`、`.pptx`、`.png`、`.jpg` 等）。
 
 ### 先预览再处理（仅 PDF）
 仅对第一页查看效果：
