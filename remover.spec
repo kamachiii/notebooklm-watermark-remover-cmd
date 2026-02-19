@@ -15,6 +15,8 @@ a = Analysis(
         'PIL',
         'PIL.Image',
         'tqdm',
+        'pptx',
+        'zipfile',
     ],
     hookspath=[],
     hooksconfig={},
