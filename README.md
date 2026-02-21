@@ -51,6 +51,21 @@ python3 remover.py example.pdf
 # or u can also aim to a especific file path: python3 remover.py ~/path/to/your/file.pdf 
 ```
 
+4.1. **Help:**
+```bash
+python3 remover.py --help
+```
+
+4.2. **Preview mode (PDF only):**
+```bash
+python3 remover.py example.pdf --preview
+```
+
+4.3. **Set specific margin:**
+```bash
+python3 remover.py example.pdf --margin-x MARGIN_X --margin-y MARGIN_Y
+```
+
 ### Using EXE (Windows Only)
 
 If you have built the executable (see [BUILD.md](BUILD.md)), you can run it directly:
