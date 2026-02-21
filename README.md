@@ -56,12 +56,7 @@ python3 remover.py example.pdf
 python3 remover.py --help
 ```
 
-4.2. **Preview mode (PDF only):**
-```bash
-python3 remover.py example.pdf --preview
-```
-
-4.3. **Set specific margin:**
+4.2. **Set specific margin:**
 ```bash
 python3 remover.py example.pdf --margin-x MARGIN_X --margin-y MARGIN_Y
 ```
