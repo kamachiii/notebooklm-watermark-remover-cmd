@@ -29,20 +29,26 @@ Instead of just covering the watermark with a solid color box (which looks bad o
 
 ### Using Python (All Platforms)
 
-1. **Set things up:**
+1. **Clone the repo**
+```bash
+git clone https://github.com/Albonire/notebooklm-watermark-remover.git
+```
+
+2. **Set things up:**
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # Windows folks: venv\Scripts\activate
 ```
 
-2. **Grab the dependencies:**
+3. **Grab the dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Run the tool:**
+4. **Run the tool:**
 ```bash
-python3 remover.py presentation.pdf
+python3 remover.py example.pdf
+# or u can also aim to a especific file path: python3 remover.py ~/path/to/your/file.pdf 
 ```
 
 ### Using EXE (Windows Only)
