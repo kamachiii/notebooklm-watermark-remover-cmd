@@ -1,0 +1,2 @@
+[console_scripts]
+notebook-remover = remover:main

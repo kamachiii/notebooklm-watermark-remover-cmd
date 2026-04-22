@@ -1,0 +1,10 @@
+LICENSE
+README.md
+remover.py
+setup.py
+notebook_remover.egg-info/PKG-INFO
+notebook_remover.egg-info/SOURCES.txt
+notebook_remover.egg-info/dependency_links.txt
+notebook_remover.egg-info/entry_points.txt
+notebook_remover.egg-info/requires.txt
+notebook_remover.egg-info/top_level.txt
