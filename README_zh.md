@@ -38,6 +38,24 @@
 
 ## 快速开始
 
+本仓库基于 Albonire 的原始项目：https://github.com/Albonire/notebooklm-watermark-remover.git。我只是继续开发并补充了下面的全局命令安装与使用方式。
+
+### 安装后可在任意目录使用
+
+如果你希望把这个工具当作全局命令使用，可以直接从 GitHub 安装：
+
+```bash
+pip install git+https://github.com/kamachiii/notebooklm-watermark-remover-cmd.git
+```
+
+安装完成后，你可以在任意目录的终端或 CMD 中直接执行：
+
+```bash
+notebook-remover your-file.pdf
+notebook-remover your-file.pptx
+notebook-remover your-image.png
+```
+
 1. **环境准备：**
 ```bash
 python3 -m venv venv

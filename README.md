@@ -38,6 +38,24 @@ While this software is provided under the MIT License, the use of this tool for 
 
 ## Getting Started
 
+This repository is based on the original project by Albonire: https://github.com/Albonire/notebooklm-watermark-remover.git. I only continued developing it and added the command-line install/use flow documented below.
+
+### Install and Use Anywhere
+
+If you want to use this tool as a command from any folder on your machine, install it directly from GitHub:
+
+```bash
+pip install git+https://github.com/kamachiii/notebooklm-watermark-remover-cmd.git
+```
+
+After that, you can run the command anywhere in terminal or CMD:
+
+```bash
+notebook-remover your-file.pdf
+notebook-remover your-file.pptx
+notebook-remover your-image.png
+```
+
 ### Using Python (All Platforms)
 
 1. **Clone the repo**
@@ -59,7 +77,7 @@ pip install -r requirements.txt
 4. **Run the tool:**
 ```bash
 python3 remover.py example.pdf
-# or u can also aim to a especific file path: python3 remover.py ~/path/to/your/file.pdf 
+# or u can also aim to a especific file path: python3 remover.py ~/path/to/your/file.pdf
 ```
 
 4.1. **Help:**
